@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,12 +13,27 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
+            ->add('name', null, [
+                'label' => 'Nome'
+            ])
             ->add('slug')
-            ->add('description')
-            ->add('body')
-            ->add('price', TextType::class)
-            ->add('category')
+            ->add('description', null, [
+                'label' => 'Descrição',
+                'help' => 'Tamanho máximo de 160 caracteres',
+            ])
+            ->add('body', null, [
+                'label' => 'Corpo',
+            ])
+            ->add('price', TextType::class, [
+                'label' => 'Preço',
+            ])
+            ->add('category', null, [
+                'label' => 'Categoria',
+                'expanded' => true,
+            ])
+            ->add('Salvar', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-lg btn-success'],
+            ])
         ;
     }
 
