@@ -2,10 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Address;
-use App\Entity\Order;
-use App\Entity\Product;
-use App\Entity\User;
+use App\Entity\{Address, Category, Order, Product, User};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -124,6 +121,44 @@ class DefaultController extends AbstractController
 //            //$order->getUser()
 //            $order->getUser()->getFirstName()
 //        );
+
+        /* ---------- */
+
+//        $product = $this->getDoctrine()->getRepository(Product::class)->find(1);
+//
+//        $category = new Category();
+//        $category->setName('Computadores');
+//        $category->setSlug('computadores');
+//        $category->setCreatedAt($now);
+//
+//        $product->addCategory($category);
+//
+//        $this->getDoctrine()->getManager()->flush();
+
+        /* ---------- */
+
+//        $product = $this->getDoctrine()->getRepository(Product::class)->find(1);
+//        dd(
+//            //$product->getCategory()
+//            $product->getCategory()->toArray()
+//        );
+
+//        $category = $this->getDoctrine()->getRepository(Category::class)->find(1);
+//        dd(
+//            //$category->getProducts()
+//            $category->getProducts()->toArray()
+//        );
+
+        /* ---------- */
+
+//        $user = $this->getDoctrine()->getRepository(User::class)->find(1);
+//        $order = $this->getDoctrine()->getRepository(Order::class)->find(1);
+//
+//        $user->removeOrder($order);
+//
+//        $this->getDoctrine()->getManager()->flush();
+
+        /* ---------- */
 
 
 //        return $this->render('index.html.twig', compact('name', 'address', 'user'));

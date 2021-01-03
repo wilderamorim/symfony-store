@@ -2,16 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ProductRepository::class)
- * @ORM\Table(name="`products`")
+ * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @ORM\Table(name="`categories`")
  */
-class Product
+class Category
 {
     /**
      * @ORM\Id
@@ -21,9 +21,9 @@ class Product
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="products", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="category")
      */
-    private $category;
+    private $products;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -36,19 +36,9 @@ class Product
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $body;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $price;
 
     /**
      * @ORM\Column(type="datetime")
@@ -62,7 +52,7 @@ class Product
 
     public function __construct()
     {
-        $this->category = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,25 +61,28 @@ class Product
     }
 
     /**
-     * @return Collection|Category[]
+     * @return Collection|Product[]
      */
-    public function getCategory(): Collection
+    public function getProducts(): Collection
     {
-        return $this->category;
+        return $this->products;
     }
 
-    public function addCategory(Category $category): self
+    public function addProduct(Product $product): self
     {
-        if (!$this->category->contains($category)) {
-            $this->category[] = $category;
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->addCategory($this);
         }
 
         return $this;
     }
 
-    public function removeCategory(Category $category): self
+    public function removeProduct(Product $product): self
     {
-        $this->category->removeElement($category);
+        if ($this->products->removeElement($product)) {
+            $product->removeCategory($this);
+        }
 
         return $this;
     }
@@ -123,33 +116,9 @@ class Product
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getBody(): ?string
-    {
-        return $this->body;
-    }
-
-    public function setBody(string $body): self
-    {
-        $this->body = $body;
-
-        return $this;
-    }
-
-    public function getPrice(): ?int
-    {
-        return $this->price;
-    }
-
-    public function setPrice(int $price): self
-    {
-        $this->price = $price;
 
         return $this;
     }
