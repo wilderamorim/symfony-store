@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block title %}Novo Produto{% endblock %}
+
+{% block body %}
+    <section>
+        <header class="border-bottom pb-2 mb-5 d-flex justify-content-between align-items-center">
+            <h1 class="h4 mb-0">Novo Produto</h1>
+            <a href="{{ path('admin_products_index') }}" class="btn btn-primary btn-sm">
+                <i class="fas fa-list"></i>
+                Ver Produtos
+            </a>
+        </header>
+
+        <form action="{{ path('admin_products_store') }}" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="name">Nome</label>
+                    <input type="text" name="name" id="name" value="" placeholder="" class="form-control" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="slug">Slug</label>
+                    <input type="text" name="slug" id="slug" value="" placeholder="" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descrição</label>
+                <textarea name="description" id="description" maxlength="160" rows="2" aria-describedby="descriptionHelp" class="form-control"></textarea>
+                <small id="descriptionHelp" class="form-text text-muted d-flex justify-content-between">
+                    <span>Tamanho máximo de 160 caracteres</span>
+                    <span><span id="countCharacters">0</span> / 160</span>
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="body">Body</label>
+                <textarea name="body" id="body" class="form-control" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Preço</label>
+                <input type="text" name="price" id="price" value="" placeholder="" class="form-control" required>
+            </div>
+
+            <button data-submit="true" class="btn btn-lg btn-success">
+                <span class="icon text-white-50">
+                  <i class="fas fa-save"></i>
+                </span>
+                Salvar
+            </button>
+        </form>
+    </section>
+{% endblock %}
