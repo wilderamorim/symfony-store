@@ -11,43 +11,7 @@
             </a>
         </header>
 
-        <form action="{{ path('admin_products_store') }}" method="post">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="name">Nome</label>
-                    <input type="text" name="name" id="name" value="" placeholder="" class="form-control" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="slug">Slug</label>
-                    <input type="text" name="slug" id="slug" value="" placeholder="" class="form-control" required>
-                </div>
-            </div>
+        {{ include('admin/product/form.html.twig', {text: 'Cadastrar'}) }}
 
-            <div class="form-group">
-                <label for="description">Descrição</label>
-                <textarea name="description" id="description" maxlength="160" rows="2" aria-describedby="descriptionHelp" class="form-control"></textarea>
-                <small id="descriptionHelp" class="form-text text-muted d-flex justify-content-between">
-                    <span>Tamanho máximo de 160 caracteres</span>
-                    <span><span id="countCharacters">0</span> / 160</span>
-                </small>
-            </div>
-
-            <div class="form-group">
-                <label for="body">Body</label>
-                <textarea name="body" id="body" class="form-control" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="price">Preço</label>
-                <input type="text" name="price" id="price" value="" placeholder="" class="form-control" required>
-            </div>
-
-            <button data-submit="true" class="btn btn-lg btn-success">
-                <span class="icon text-white-50">
-                  <i class="fas fa-save"></i>
-                </span>
-                Salvar
-            </button>
-        </form>
     </section>
 {% endblock %}

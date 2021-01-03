@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
+use App\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,44 +27,31 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/create", name="create", methods={"GET"})
+     * @Route("/create", name="create", methods={"GET", "POST"})
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
-        return $this->render('admin/product/create.html.twig');
-    }
+        $form = $this->createForm(ProductType::class);
 
-    /**
-     * @Route("/", name="store", methods={"POST"})
-     */
-    public function store(Request $request): Response
-    {
-        try {
-            $data = $request->request->all();
-            $now = new \DateTime('now', new \DateTimeZone('America/Sao_Paulo'));
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $product = $form->getData();
+            $product->setCreatedAt();
 
-            $product = new Product();
-            $product->setName($data['name']); // $request->request->get('name')
-            $product->setDescription($data['description']);
-            $product->setBody($data['body']);
-            $product->setSlug($data['slug']);
-            $product->setPrice($data['price']);
-            $product->setCreatedAt($now);
-            $product->setUpdatedAt($now);
-
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($product);
-            $manager->flush();
+            $this->getDoctrine()->getManager()->persist($product);
+            $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', 'Produto cadastrado com sucesso!');
             return $this->redirectToRoute('admin_products_index');
-        } catch (\Exception $exception) {
-            die($exception->getMessage());
         }
+
+        return $this->render('admin/product/create.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     /**
-     * @Route("/{product}/edit", name="edit", methods={"GET"})
+     * @Route("/{product}/edit", name="edit", methods={"GET", "POST"})
      */
     public function edit(Request $request): Response
     {
@@ -75,42 +63,22 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('admin_products_index');
         }
 
-        return $this->render('admin/product/edit.html.twig', [
-            'product' => $product
-        ]);
-    }
+        $form = $this->createForm(ProductType::class, $product);
 
-    /**
-     * @Route("/{product}", name="update", methods={"PUT"})
-     */
-    public function update(Request $request): Response
-    {
-        $id = $request->attributes->get('product');
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $product = $form->getData();
+            $product->setUpdatedAt();
 
-        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-        if (!$product) {
-            $this->addFlash('danger', 'Algo deu errado, tente novamente em alguns minutos');
-            return $this->redirectToRoute('admin_products_index');
-        }
-
-        try {
-            $data = $request->request->all();
-
-            $product->setName($data['name']);
-            $product->setDescription($data['description']);
-            $product->setBody($data['body']);
-            $product->setSlug($data['slug']);
-            $product->setPrice($data['price']);
-            $product->setUpdatedAt(new \DateTime('now', new \DateTimeZone('America/Sao_Paulo')));
-
-            $manager = $this->getDoctrine()->getManager();
-            $manager->flush();
+            $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', 'Produto atualizado com sucesso!');
             return $this->redirectToRoute('admin_products_edit', ['product' => $product->getId()]);
-        } catch (\Exception $exception) {
-            die($exception->getMessage());
         }
+
+        return $this->render('admin/product/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     /**
