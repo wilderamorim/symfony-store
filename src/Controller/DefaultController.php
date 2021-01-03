@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Address;
 use App\Entity\Product;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -63,7 +65,39 @@ class DefaultController extends AbstractController
 //        $products = $this->getDoctrine()->getRepository(Product::class)->findOnePrice(1990);
 //        dd($products);
 
-        return $this->render('index.html.twig', compact('name'));
+        /* ---------- */
+
+//        $manager = $this->getDoctrine()->getManager();
+//
+//        $user = new User();
+//        $user->setFirstName('Wilder');
+//        $user->setLastName('Amorim');
+//        $user->setEmail('wilderamorim@msn.com');
+//        $user->setPassword(md5(12345678));
+//        $user->setCreatedAt($now);
+//        $user->setUpdatedAt($now);
+//
+//        $manager->persist($user);
+//        $manager->flush();
+//
+//        $address = new Address();
+//        $address->setUser($user);
+//        $address->setStreet('Rua João Lustosa');
+//        $address->setNumber(55);
+//        $address->setNeighborhood('Lourdes');
+//        $address->setCity('Juiz de Fora');
+//        $address->setState('MG');
+//        $address->setZipCode('36070-720');
+//
+//        $manager->persist($address);
+//        $manager->flush();
+
+        /* ---------- */
+
+        $address = $this->getDoctrine()->getRepository(Address::class)->find(1);
+        $user = $this->getDoctrine()->getRepository(User::class)->find(1);
+
+        return $this->render('index.html.twig', compact('name', 'address', 'user'));
     }
 
     /**
