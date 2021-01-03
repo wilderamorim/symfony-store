@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Address;
+use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -94,10 +95,39 @@ class DefaultController extends AbstractController
 
         /* ---------- */
 
-        $address = $this->getDoctrine()->getRepository(Address::class)->find(1);
-        $user = $this->getDoctrine()->getRepository(User::class)->find(1);
+//        $address = $this->getDoctrine()->getRepository(Address::class)->find(1);
+//        $user = $this->getDoctrine()->getRepository(User::class)->find(1);
 
-        return $this->render('index.html.twig', compact('name', 'address', 'user'));
+        /* ---------- */
+
+//        $order = new Order();
+//        $order->setUser($user);
+//        $order->setReference('CÓDIGO COMPRA');
+//        $order->setItems('ITEMS');
+//        $order->setCreatedAt($now);
+//        $order->setUpdatedAt($now);
+//
+//        $this->getDoctrine()->getManager()->persist($order);
+//        $this->getDoctrine()->getManager()->flush();
+
+        /* ---------- */
+
+//        $user = $this->getDoctrine()->getRepository(User::class)->find(1);
+//        dd(
+//            //$user->getOrders()
+//            //$user->getOrders()[0]
+//            $user->getOrders()->toArray()
+//        );
+
+//        $order = $this->getDoctrine()->getRepository(Order::class)->find(1);
+//        dd(
+//            //$order->getUser()
+//            $order->getUser()->getFirstName()
+//        );
+
+
+//        return $this->render('index.html.twig', compact('name', 'address', 'user'));
+        return $this->render('index.html.twig', compact('name'));
     }
 
     /**
