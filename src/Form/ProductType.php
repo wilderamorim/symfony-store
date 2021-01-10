@@ -16,7 +16,6 @@ class ProductType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nome'
             ])
-            ->add('slug')
             ->add('description', null, [
                 'label' => 'Descrição',
                 'help' => 'Tamanho máximo de 160 caracteres',
