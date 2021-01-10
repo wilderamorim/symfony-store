@@ -2,11 +2,12 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Product;
 use App\Form\ProductType;
+use App\Repository\ProductRepository;
+use App\Service\UploadService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -14,15 +15,24 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProductController extends AbstractController
 {
+    private $em;                // $this->getDoctrine()->getManager()
+    private $productRepository; // $this->getDoctrine()->getRepository(Product::class)
+
+    public function __construct(EntityManagerInterface $entityManager, ProductRepository $productRepository)
+    {
+        $this->em = $entityManager;
+        $this->productRepository = $productRepository;
+    }
+
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(UploadService $uploadService): Response
     {
-        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+        $uploadService->upload();
 
         return $this->render('admin/product/index.html.twig', [
-            'products' => $products
+            'products' => $this->productRepository->findAll()
         ]);
     }
 
@@ -38,8 +48,8 @@ class ProductController extends AbstractController
             $product = $form->getData();
             $product->setCreatedAt();
 
-            $this->getDoctrine()->getManager()->persist($product);
-            $this->getDoctrine()->getManager()->flush();
+            $this->em->persist($product);
+            $this->em->flush();
 
             $this->addFlash('success', 'Produto cadastrado com sucesso!');
             return $this->redirectToRoute('admin_products_index');
@@ -53,11 +63,11 @@ class ProductController extends AbstractController
     /**
      * @Route("/{product}/edit", name="edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request): Response
+    public function edit(Request $request, ProductRepository $productRepository): Response
     {
         $id = $request->attributes->get('product');
 
-        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+        $product = $productRepository->find($id);
         if (!$product) {
             $this->addFlash('danger', 'Algo deu errado, tente novamente em alguns minutos');
             return $this->redirectToRoute('admin_products_index');
@@ -70,7 +80,7 @@ class ProductController extends AbstractController
             $product = $form->getData();
             $product->setUpdatedAt();
 
-            $this->getDoctrine()->getManager()->flush();
+            $this->em->flush();
 
             $this->addFlash('success', 'Produto atualizado com sucesso!');
             return $this->redirectToRoute('admin_products_edit', ['product' => $product->getId()]);
@@ -88,16 +98,15 @@ class ProductController extends AbstractController
     {
         $id = $request->attributes->get('product');
 
-        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+        $product = $this->productRepository->find($id);
         if (!$product) {
             $this->addFlash('danger', 'Algo deu errado, tente novamente em alguns minutos');
             return $this->redirectToRoute('admin_products_index');
         }
 
         try {
-            $manager = $this->getDoctrine()->getManager();
-            $manager->remove($product);
-            $manager->flush();
+            $this->em->remove($product);
+            $this->em->flush();
 
             $this->addFlash('success', 'Produto excluído com sucesso!');
             return $this->redirectToRoute('admin_products_index');
