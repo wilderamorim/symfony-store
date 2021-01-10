@@ -67,9 +67,15 @@ class Product
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ProductPhoto::class, mappedBy="product", orphanRemoval=true, cascade={"persist"})
+     */
+    private $productPhotos;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
+        $this->productPhotos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -181,6 +187,45 @@ class Product
     public function setUpdatedAt(?\DateTimeInterface $updatedAt = null): self
     {
         $this->updatedAt = $updatedAt ?? new \DateTime('now', new \DateTimeZone('America/Sao_Paulo'));
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductPhoto[]
+     */
+    public function getProductPhotos(): Collection
+    {
+        return $this->productPhotos;
+    }
+
+    public function addManyProductPhoto(array $productPhotoEntities): self
+    {
+        foreach ($productPhotoEntities as $productPhotoEntity) {
+            $this->addProductPhoto($productPhotoEntity);
+        }
+
+        return $this;
+    }
+
+    public function addProductPhoto(ProductPhoto $productPhoto): self
+    {
+        if (!$this->productPhotos->contains($productPhoto)) {
+            $this->productPhotos[] = $productPhoto;
+            $productPhoto->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductPhoto(ProductPhoto $productPhoto): self
+    {
+        if ($this->productPhotos->removeElement($productPhoto)) {
+            // set the owning side to null (unless already changed)
+            if ($productPhoto->getProduct() === $this) {
+                $productPhoto->setProduct(null);
+            }
+        }
 
         return $this;
     }

@@ -11,6 +11,15 @@
             </a>
         </header>
 
+        <div class="row">
+            {% for photo in photos %}
+                <div class="col-lg-4 mb-4">
+                    <img src="{{ '/uploads/products/' ~ photo.image }}" alt="..." class="img-thumbnail">
+                    <a href="{{ path('product_photo_destroy', {'photo': photo.id}) }}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                </div>
+            {% endfor %}
+        </div>
+
         {% include 'admin/product/_form.html.twig' %}
 
     </section>
