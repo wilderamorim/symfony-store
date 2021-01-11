@@ -8,7 +8,7 @@ use App\Repository\ProductRepository;
 use App\Service\UploadService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\{File\UploadedFile, Request, Response};
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -45,7 +45,6 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $product = $form->getData();
-            $product->setCreatedAt();
 
             //upload
             if ($files = $form['photos']->getData()) {
@@ -84,7 +83,6 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $product = $form->getData();
-            $product->setUpdatedAt();
 
             //upload
             if ($files = $form['photos']->getData()) {
@@ -135,7 +133,6 @@ class ProductController extends AbstractController
         foreach ($images as $image) {
             $productPhoto = new ProductPhoto();
             $productPhoto->setImage($image);
-            $productPhoto->setCreatedAt();
 
             $entities[] = $productPhoto;
         }

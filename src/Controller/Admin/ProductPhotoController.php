@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\ProductPhoto;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductPhotoController extends AbstractController
 {
     /**
-     * @Route("/product/photo/{photo}", name="product_photo_destroy")
+     * @Route("/admin/product/photo/{photo}", name="admin_product_photo_destroy")
      */
     public function destroy(ProductPhoto $photo, EntityManagerInterface $entityManager): Response
     {
