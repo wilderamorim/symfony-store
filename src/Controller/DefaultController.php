@@ -160,6 +160,14 @@ class DefaultController extends AbstractController
 
         /* ---------- */
 
+//        $user = $this->getDoctrine()->getRepository(User::class)->find(1);
+//        $user->setRoles(['ROLE_ADMIN']);
+//
+//        $manager = $this->getDoctrine()->getManager();
+//        $manager->flush();
+
+        /* ---------- */
+
 
 //        return $this->render('index.html.twig', compact('name', 'address', 'user'));
         return $this->render('index.html.twig', compact('name'));

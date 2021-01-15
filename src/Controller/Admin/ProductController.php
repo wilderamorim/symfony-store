@@ -7,6 +7,7 @@ use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use App\Service\UploadService;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\{IsGranted, Security};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,9 +28,13 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/", name="index", methods={"GET"})
+     * Security("is_granted('ROLE_ADMIN')")
+     * IsGranted("ROLE_USER")
      */
     public function index(): Response
     {
+        #$this->denyAccessUnlessGranted('ROLE_USER');
+
         return $this->render('admin/product/index.html.twig', [
             'products' => $this->productRepository->findAll()
         ]);
