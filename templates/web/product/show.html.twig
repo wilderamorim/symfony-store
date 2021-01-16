@@ -1,0 +1,30 @@
+{% extends 'web.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-6">
+            {% if product.productPhotos.count %}
+                <div class="row">
+                    <div class="col-lg-3">
+                        {% for photo in product.productPhotos %}
+                            <img src="{{ '/uploads/products/' ~ photo.image }}" alt="..." class="img-thumbnail mb-3">
+                        {% endfor %}
+                    </div>
+                    <div class="col-lg-9 pl-0">
+                        <img src="{{ asset('/uploads/products/' ~ product.productPhotos.first.image) }}" alt="..." class="img-thumbnail">
+                    </div>
+                </div>
+            {% else %}
+                <img src="{{ asset('images/no-photo.jpg') }}" alt="..." class="img-thumbnail">
+            {% endif %}
+        </div>
+        <div class="col-lg-6">
+            <h1>{{ product.name }}</h1>
+            <p><strong>R$ {{ product.floatPrice|number_format(2, ',', '.') }}</strong></p>
+            <p>{{ product.description }}</p>
+            <a href="#" class="btn btn-primary">
+                Comprar
+            </a>
+        </div>
+    </div>
+{% endblock %}

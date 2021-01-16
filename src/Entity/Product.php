@@ -149,6 +149,11 @@ class Product
         return $this;
     }
 
+    public function getFloatPrice(): ?float
+    {
+        return $this->getPrice() / 100;
+    }
+
     public function getPrice(): ?int
     {
         return $this->price;

@@ -1,0 +1,30 @@
+{% extends 'web.html.twig' %}
+
+{% block body %}
+    <div class="mb-3">
+        <h1>{{ category }}</h1>
+    </div>
+    {% if products|length %}
+        <div class="row">
+            {% for product in products %}
+                {% set url = path('products_show', {'slug': product.slug}) %}
+
+                {% set image = asset('images/no-photo.jpg') %}
+                {% if product.productPhotos.count %}
+                    {% set image = asset('/uploads/products/' ~ product.productPhotos.first.image) %}
+                {% endif %}
+
+                {% include 'web/_partials/product-list.html.twig' %}
+
+            {% endfor %}
+        </div>
+
+        <div class="pagination">
+            {{ knp_pagination_render(products) }}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Não há produtos cadastrados na categoria <strong>{{ category }}</strong>
+        </div>
+    {% endif %}
+{% endblock %}

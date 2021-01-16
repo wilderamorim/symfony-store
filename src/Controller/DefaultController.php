@@ -173,11 +173,11 @@ class DefaultController extends AbstractController
         return $this->render('index.html.twig', compact('name'));
     }
 
-    /**
-     * @Route("/product/{slug}", name="product_single")
-     */
-    public function product($slug): Response
-    {
-        return $this->render('single.html.twig', compact('slug'));
-    }
+//    /**
+//     * @Route("/product/{slug}", name="product_single")
+//     */
+//    public function product($slug): Response
+//    {
+//        return $this->render('single.html.twig', compact('slug'));
+//    }
 }
