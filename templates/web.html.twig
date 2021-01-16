@@ -21,16 +21,16 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="{{ absolute_url('/') }}">Navbar</a>
+        <a class="navbar-brand" href="{{ path('web_index') }}">Navbar</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item{% if app.request.attributes.get('_route') == 'home' %} active{% endif %}">
-                    <a class="nav-link" href="{{ absolute_url('/') }}">
-                        Home{% if app.request.attributes.get('_route') == 'home' %} <span class="sr-only">(current)</span>{% endif %}
+                <li class="nav-item{% if app.request.attributes.get('_route') == 'web_index' %} active{% endif %}">
+                    <a class="nav-link" href="{{ path('web_index') }}">
+                        Home{% if app.request.attributes.get('_route') == 'web_index' %} <span class="sr-only">(current)</span>{% endif %}
                     </a>
                 </li>
                 <li class="nav-item{% if app.request.attributes.get('_route') == 'products_index' %} active{% endif %}">
@@ -47,6 +47,14 @@
                     </li>
                 {% endfor %}
             </ul>
+            <span class="navbar-text mx-2">
+                <a href="{{ path('cart_index') }}" class="text-decoration-none">
+                    <sub class="fas fa-shopping-cart fa-1x"></sub>
+                    <sup class="badge badge-primary">
+                        {{ app.request.session.has('cart') ? app.request.session.get('cart')|length : 0 }}
+                    </sup>
+                </a>
+            </span>
             <form action="{{ path('search_index') }}" class="form-inline my-2 my-lg-0">
                 <input type="search" name="s" placeholder="Buscar" aria-label="Buscar" class="form-control mr-sm-2">
                 <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Buscar</button>
@@ -55,6 +63,8 @@
     </div>
 </nav>
 <div class="container py-5">
+    {% include 'admin/_partials/alert.html.twig' %}
+
     {% block body %}{% endblock %}
 </div>
 

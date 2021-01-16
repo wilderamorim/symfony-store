@@ -20,11 +20,17 @@
         </div>
         <div class="col-lg-6">
             <h1>{{ product.name }}</h1>
-            <p><strong>R$ {{ product.floatPrice|number_format(2, ',', '.') }}</strong></p>
             <p>{{ product.description }}</p>
-            <a href="#" class="btn btn-primary">
-                Comprar
-            </a>
+            <h4><strong>R$ {{ product.floatPrice|number_format(2, ',', '.') }}</strong></h4>
+
+            <form action="{{ path('cart_add', {item: product.slug}) }}" method="post" class="form-inline">
+                <label class="sr-only" for="amount">Quantidade</label>
+                <input type="number" name="amount" id="amount" value="1" class="form-control mb-2 mr-sm-2" required>
+                <button type="submit" class="btn btn-success mb-2">Comprar</button>
+            </form>
         </div>
     </div>
+
+    <hr>
+    {{ product.body }}
 {% endblock %}
